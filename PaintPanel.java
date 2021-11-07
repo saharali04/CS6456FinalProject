@@ -16,10 +16,13 @@ public class PaintPanel extends JPanel {
 
     private int pointCount = 0 ; // count number of points
      // array of 10000 java.awt.Point references
-     private Point points[] = new Point[ 1000000 ];
+     private Point points[] = new Point[ 1000000];
+
 
      private List<Integer> xpoints = new ArrayList<Integer>();
      private List<Integer> ypoints = new ArrayList<Integer>();
+
+     private List<Shapes> shapesList = new ArrayList<Shapes>();
      // set up GUI and register mouse event handler
      public PaintPanel() {
      // handle frame mouse motion event
@@ -76,10 +79,11 @@ public class PaintPanel extends JPanel {
             }
             System.out.println(difference/ypoints.size());
             System.out.println(ypoints.size());
-            if (difference/ypoints.size() < 10 && ypoints.size() > 100) {
-                System.out.println("Circle/Rectangle");
+            if (difference/ypoints.size() < 20) {
+                System.out.println("Circle");
+                shapesList.add(Shapes.CIRCLE);
             } else {
-                System.out.println("Stray Mark");
+                System.out.println("Rectangle");
             }
 
 
