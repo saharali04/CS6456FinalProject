@@ -20,11 +20,15 @@ import java.lang.Math;
 public class PaintPanel extends JPanel {
 
     private int pointCount = 0 ; // count number of points
+    List<List<Point>> masterPointList = new ArrayList<List<Point>>(4);
+
+    private int shapeCount = 0;
     // array of 10000 java.awt.Point references
-    private Point points[] = new Point[ 1000000 ];
+    private List<Point> points = new ArrayList<Point>();
 
     private List<Integer> xpoints = new ArrayList<Integer>();
     private List<Integer> ypoints = new ArrayList<Integer>();
+
     // set up GUI and register mouse event handler
     public PaintPanel() {
         // handle frame mouse motion event
@@ -32,15 +36,16 @@ public class PaintPanel extends JPanel {
                                 {
                                     // store drag coordinates and repaint
                                     public void mouseDragged( MouseEvent event ) {
-                                        if ( pointCount < points.length )
+                                        if ( pointCount < 10000000 )
                                         {
-                                            points[ pointCount ] = event.getPoint(); // find point
+                                            points.add(event.getPoint()); // find point
                                             xpoints.add(event.getPoint().x);
                                             ypoints.add(event.getPoint().y);
 
                                             pointCount++; // increment number of points in array
                                             repaint(); // repaint JFrame
                                         } // end if
+                                        masterPointList.add(points);
                                     } // end method mouseDragged
                                 } // end anonymous inner class
         ); // end call to addMouseMotionListener
@@ -90,19 +95,10 @@ public class PaintPanel extends JPanel {
                 else
                     midx=(sizex+1)/2;
 
-                //System.out.println(xpoints.get(0));
-                //System.out.println(sizex);
-                //System.out.println(ypoints.get(0));
-                //System.out.println(sizey);
-
-                //System.out.println(radius);
-
-                //System.out.println(centerX + " , " + centerY);
-
                 // (x-h)^2 + (y - k)^2 = r^2
                 int difference = 0;
                 for ( int i = 0 ; i < pointCount; i++ ) {
-                    double radNew = Math.sqrt(Math.pow(points[i].x  - centerX, 2) + Math.pow(points[i].y - centerY, 2));
+                    double radNew = Math.sqrt(Math.pow(points.get(i).x  - centerX, 2) + Math.pow(points.get(i).y - centerY, 2));
                     double diff = Math.pow(radius - radNew, 2);
                     difference+=diff;
                 }
@@ -154,21 +150,17 @@ public class PaintPanel extends JPanel {
                     System.out.println(endptdiffX);
                     System.out.println(xpoints.get(midx)-midptX);
                 }
+                xpoints = new ArrayList<Integer>();
+                ypoints = new ArrayList<Integer>();
+                points = new ArrayList<Point>();
+                pointCount = 0;
+                shapeCount+=1;
+                System.out.println(xpoints);
+                System.out.println(ypoints);
+                System.out.println(points);
 
             }
 
-            public void mouseClicked(MouseEvent e) {
-                if ( pointCount < points.length )
-                {
-                    points[ pointCount ] = e.getPoint(); // find point
-                    xpoints.add(e.getPoint().x);
-                    ypoints.add(e.getPoint().y);
-
-                    pointCount++; // increment number of points in array
-                    repaint(); // repaint JFrame
-                }
-
-            }
         });
     } // end PaintPanel constructor
 
@@ -176,51 +168,11 @@ public class PaintPanel extends JPanel {
     public void paintComponent( Graphics g ) {
         super.paintComponent( g ); // clears drawing area
         // draw all points in array
-        for ( int i = 0 ; i < pointCount; i++ ) {
-            System.out.println(points[i]);
-            g.fillOval( points[ i ].x, points[ i ].y, 8, 8 );
+        for (int j = 0; j < masterPointList.size(); j++) {
+            for (int i = 0 ; i < masterPointList.get(j).size(); i++) {
+                g.fillOval( masterPointList.get(j).get(i).x, masterPointList.get(j).get(i).y, 8, 8 );
+            }
         }
-
     } // end method paintComponent
 } // end class PaintPanel
 
-
-
-/*
-public class PaintPanel extends JPanel {
-    private int pointCount = 0; // count number of points
-    // array of 10000 java.awt.Point references
-    private Point points[] = new Point[10000];
-    private List<Integer> xpoints = new ArrayList<Integer>();
-    private List<Integer> ypoints = new ArrayList<Integer>();
-
-    // set up GUI and register mouse event handler
-    public PaintPanel() {
-        // handle frame mouse motion event
-        addMouseMotionListener(
-                new MouseMotionAdapter() // anonymous inner class
-                {
-                    // store drag coordinates and repaint
-                    public void mouseDragged(MouseEvent event) {
-                        if (pointCount < points.length) {
-                            points[pointCount] = event.getPoint(); // find point
-                            xpoints.add(event.getPoint().x);
-                            ypoints.add(event.getPoint().y);
-                            pointCount++; // increment number of points in array
-                            repaint(); // repaint JFrame
-                        } // end if
-                    } // end method mouseDragged
-                } // end anonymous inner class
-        ); // end call to addMouseMotionListener
-    } // end PaintPanel constructor
-
-    // draw oval in a 4-by-4 bounding box at specified location on window
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g); // clears drawing area
-
-        // draw all points in array
-        for (int i = 0; i < pointCount; i++)
-            g.fillOval(points[i].x, points[i].y, 8, 8);
-    } // end method paintComponent
-} // end class PaintPanel
-*/
