@@ -23,32 +23,36 @@ public class PaintPanel extends JPanel {
     List<List<Point>> masterPointList = new ArrayList<List<Point>>(4);
 
     private int shapeCount = 0;
-    // array of 10000 java.awt.Point references
+
     private List<Point> points = new ArrayList<Point>();
 
     private List<Integer> xpoints = new ArrayList<Integer>();
     private List<Integer> ypoints = new ArrayList<Integer>();
 
-    // set up GUI and register mouse event handler
-    public PaintPanel() {
-        // handle frame mouse motion event
-        addMouseMotionListener( new MouseMotionAdapter() // anonymous inner class
-                                {
-                                    // store drag coordinates and repaint
-                                    public void mouseDragged( MouseEvent event ) {
-                                        if ( pointCount < 10000000 )
-                                        {
-                                            points.add(event.getPoint()); // find point
-                                            xpoints.add(event.getPoint().x);
-                                            ypoints.add(event.getPoint().y);
+    private List<Shapes> shapeList = new ArrayList<Shapes>();
 
-                                            pointCount++; // increment number of points in array
-                                            repaint(); // repaint JFrame
-                                        } // end if
-                                        masterPointList.add(points);
-                                    } // end method mouseDragged
-                                } // end anonymous inner class
-        ); // end call to addMouseMotionListener
+
+    public PaintPanel() {
+        addMouseMotionListener(new MouseMotionAdapter() {
+
+                public void mouseDragged( MouseEvent event ) {
+                    if (pointCount < 10000000) {
+                        points.add(event.getPoint());
+                        xpoints.add(event.getPoint().x);
+                        ypoints.add(event.getPoint().y);
+                        pointCount++;
+
+                        try {
+                            masterPointList.get(shapeCount);
+                            masterPointList.set(shapeCount,points);
+                        } catch (IndexOutOfBoundsException e) {
+                            masterPointList.add(points);
+                        }
+                        repaint();
+                    }
+                }
+            }
+        );
 
         addMouseListener(new MouseAdapter() {
             @Override public void mouseReleased(MouseEvent e) {
@@ -57,9 +61,6 @@ public class PaintPanel extends JPanel {
                 int maxX = Collections.max(xpoints);
                 int sizex,sizey;
 
-                System.out.println("minX " + minX);
-                System.out.println("maxX " + maxX);
-
 
                 int centerX = (maxX + minX)/2;
 
@@ -67,8 +68,6 @@ public class PaintPanel extends JPanel {
                 int minY = Collections.min(ypoints);
                 int maxY = Collections.max(ypoints);
 
-                System.out.println("minY " + minY);
-                System.out.println("maxY " + maxY);
 
                 int centerY = (maxY + minY)/2;
 
@@ -104,61 +103,49 @@ public class PaintPanel extends JPanel {
                 }
                 //System.out.println(difference/ypoints.size());
                 //System.out.println(ypoints.size());
-                if (difference/ypoints.size() < 10 && ypoints.size()>15) {
+                if (difference/ypoints.size() < 10 && ypoints.size()>50) {
                     System.out.println("Circle");
+                    shapeList.add(Shapes.CIRCLE);
                     System.out.println(ypoints.size());
                 } else {
                     System.out.println("Not circle");
 
-
-
-                    if(endptdiffY<10 && ypoints.size()<20) {
+                    if (endptdiffY<10 && ypoints.size()<20) {
                         System.out.println("Dash");
-                        //System.out.println(ypoints.size());
-                    }
-
-
-
-                    else if(endptdiffY<10 && Math.abs(ypoints.get(midy)-midptY)<10) {
+                        shapeList.add(Shapes.DASH);
+                    } else if(endptdiffY<10 && Math.abs(ypoints.get(midy)-midptY)<10) {
                         System.out.println("Horizontal line");
-                        //System.out.println(ypoints.size());
-                    }
-
-                    else if(endptdiffX<10 && Math.abs(xpoints.get(midx)-midptX)<10) {
+                        shapeList.add(Shapes.HORIZONTAL_LINE);
+                    } else if(endptdiffX<10 && Math.abs(xpoints.get(midx)-midptX)<10) {
                         System.out.println("Vertical line");
-                    }
-
-
-                    else if(endptdiffY<10 && (ypoints.get(midy)-midptY)>10){
+                        shapeList.add(Shapes.VERTICAL_LINE);
+                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)>10){
                         System.out.println("Bottom arrow");
-                    }
-
-                    else if(endptdiffY<10 && (ypoints.get(midy)-midptY)<10){
+                        shapeList.add(Shapes.BOTTOM_ARROW);
+                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)<10){
                         System.out.println("Top arrow");
-                    }
-
-
-                    else if(endptdiffX<50 && (xpoints.get(midx)-midptX)>10){
+                        shapeList.add(Shapes.TOP_ARROW);
+                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)>10){
                         System.out.println("Right arrow");
-                    }
+                        shapeList.add(Shapes.RIGHT_ARROW);
 
-                    else if(endptdiffX<50 && (xpoints.get(midx)-midptX)<10){
+                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)<10){
                         System.out.println("Left arrow");
+                        shapeList.add(Shapes.LEFT_ARROW);
+                    } else {
+                        masterPointList.get(shapeCount).clear();
+                        repaint();
+                        shapeCount-=1;
                     }
-
-
-                    System.out.println(endptdiffX);
-                    System.out.println(xpoints.get(midx)-midptX);
                 }
+
                 xpoints = new ArrayList<Integer>();
                 ypoints = new ArrayList<Integer>();
                 points = new ArrayList<Point>();
                 pointCount = 0;
                 shapeCount+=1;
-                System.out.println(xpoints);
-                System.out.println(ypoints);
-                System.out.println(points);
 
+                System.out.println(shapeList);
             }
 
         });
