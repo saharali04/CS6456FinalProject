@@ -31,6 +31,11 @@ public class PaintPanel extends JPanel {
 
     private List<Shapes> shapeList = new ArrayList<Shapes>();
 
+    private List<ShapeInfo> shapeInfoList = new ArrayList<ShapeInfo>();
+
+    private Shapes currentShape = null;
+
+
 
     public PaintPanel() {
         addMouseMotionListener(new MouseMotionAdapter() {
@@ -105,17 +110,17 @@ public class PaintPanel extends JPanel {
                 //System.out.println(difference/ypoints.size());
                 //System.out.println(ypoints.size());
                 if (difference/ypoints.size() < 10 && ypoints.size()>50) {
-                    System.out.println("Circle");
                     flag=1;
                     shapeList.add(Shapes.CIRCLE);
                     System.out.println(ypoints.size());
+                    currentShape = Shapes.CIRCLE;
+
                 } else {
                     System.out.println("Not circle");
 
                     if (endptdiffX<10 && endptdiffY<10 && flag==0)
                     {
 
-                        System.out.println("Rectangle");
                         System.out.println("Center "+
                                 centerX+
                                 " "+centerY);
@@ -124,36 +129,36 @@ public class PaintPanel extends JPanel {
 
                         flag=1;
                         shapeList.add(Shapes.RECTANGLE);
+                        currentShape = Shapes.RECTANGLE;
                     }
                     else if (endptdiffY<10 && ypoints.size()<20 && flag==0) {
-                        System.out.println("Dash");
                         flag=1;
                         shapeList.add(Shapes.DASH);
+                        currentShape = Shapes.DASH;
                     } else if(endptdiffY<10 && Math.abs(ypoints.get(midy)-midptY)<10 && flag==0) {
-                        System.out.println("Horizontal line");
                         flag=1;
                         shapeList.add(Shapes.HORIZONTAL_LINE);
+                        currentShape = Shapes.HORIZONTAL_LINE;
                     } else if(endptdiffX<10 && Math.abs(xpoints.get(midx)-midptX)<10 && flag==0) {
-                        System.out.println("Vertical line");
                         flag=1;
                         shapeList.add(Shapes.VERTICAL_LINE);
+                        currentShape = Shapes.VERTICAL_LINE;
                     } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)>10 && flag==0){
-                        System.out.println("Bottom arrow");
                         flag=1;
                         shapeList.add(Shapes.BOTTOM_ARROW);
+                        currentShape = Shapes.BOTTOM_ARROW;
                     } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)<10 && flag==0){
-                        System.out.println("Top arrow");
                         flag=1;
                         shapeList.add(Shapes.TOP_ARROW);
+                        currentShape = Shapes.TOP_ARROW;
                     } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)>10 && flag==0){
-                        System.out.println("Right arrow");
                         flag=1;
                         shapeList.add(Shapes.RIGHT_ARROW);
-
+                        currentShape = Shapes.RIGHT_ARROW;
                     } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)<10 && flag==0){
-                        System.out.println("Left arrow");
                         flag=1;
                         shapeList.add(Shapes.LEFT_ARROW);
+                        currentShape = Shapes.LEFT_ARROW;
                     } else {
                         masterPointList.get(shapeCount).clear();
                         repaint();
@@ -161,11 +166,21 @@ public class PaintPanel extends JPanel {
                     }
                 }
 
+                if (currentShape != null) {
+                    ShapeInfo thisShapesInfo = new ShapeInfo(maxX - minX, maxY - minY, points.get(0).x, points.get(0).y, points.get(points.size() - 1).x, points.get(points.size() -1).y);
+                    shapeInfoList.add(thisShapesInfo);
+                    System.out.println(thisShapesInfo);
+
+                }
+                System.out.println(currentShape);
+
                 xpoints = new ArrayList<Integer>();
                 ypoints = new ArrayList<Integer>();
                 points = new ArrayList<Point>();
                 pointCount = 0;
                 shapeCount+=1;
+
+
 
                 System.out.println(shapeList);
             }
@@ -184,4 +199,3 @@ public class PaintPanel extends JPanel {
         }
     } // end method paintComponent
 } // end class PaintPanel
-

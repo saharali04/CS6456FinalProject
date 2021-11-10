@@ -17,8 +17,8 @@ public class ShapeInfo {
 
     @Override
     public String toString() {
-        return "width: " + Integer.toString(this.width) + "\n" + " height: " + Integer.toString(this.height) + "\n" + " startX: " + Integer.toString(this.startX) + "\n" +
-            " endX: " + Integer.toString(this.endX)+ "\n" + " startY: " + Integer.toString(this.startY) + "\n" + " endY: " + Integer.toString(this.endY) + "\n";
+        return "width: " + Integer.toString(this.width) + "\n" + "height: " + Integer.toString(this.height) + "\n" + "startX: " + Integer.toString(this.startX) + "\n" +
+            "endX: " + Integer.toString(this.endX)+ "\n" + "startY: " + Integer.toString(this.startY) + "\n" + "endY: " + Integer.toString(this.endY) + "\n";
     }
 
 
