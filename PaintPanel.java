@@ -60,7 +60,7 @@ public class PaintPanel extends JPanel {
                 int minX = Collections.min(xpoints);
                 int maxX = Collections.max(xpoints);
                 int sizex,sizey;
-
+                int flag=0;
 
                 int centerX = (maxX + minX)/2;
 
@@ -70,6 +70,7 @@ public class PaintPanel extends JPanel {
 
 
                 int centerY = (maxY + minY)/2;
+
 
                 int radius = ((maxX - minX) + (maxY - minY)) / 4;
 
@@ -105,32 +106,53 @@ public class PaintPanel extends JPanel {
                 //System.out.println(ypoints.size());
                 if (difference/ypoints.size() < 10 && ypoints.size()>50) {
                     System.out.println("Circle");
+                    flag=1;
                     shapeList.add(Shapes.CIRCLE);
                     System.out.println(ypoints.size());
                 } else {
                     System.out.println("Not circle");
 
-                    if (endptdiffY<10 && ypoints.size()<20) {
+                    if (endptdiffX<10 && endptdiffY<10 && flag==0)
+                    {
+
+                        System.out.println("Rectangle");
+                        System.out.println("Center "+
+                                centerX+
+                                " "+centerY);
+                        System.out.println("Side X length " + (maxX-minX));
+                        System.out.println("Side Y length " + (maxY-minY));
+
+                        flag=1;
+                        shapeList.add(Shapes.RECTANGLE);
+                    }
+                    else if (endptdiffY<10 && ypoints.size()<20 && flag==0) {
                         System.out.println("Dash");
+                        flag=1;
                         shapeList.add(Shapes.DASH);
-                    } else if(endptdiffY<10 && Math.abs(ypoints.get(midy)-midptY)<10) {
+                    } else if(endptdiffY<10 && Math.abs(ypoints.get(midy)-midptY)<10 && flag==0) {
                         System.out.println("Horizontal line");
+                        flag=1;
                         shapeList.add(Shapes.HORIZONTAL_LINE);
-                    } else if(endptdiffX<10 && Math.abs(xpoints.get(midx)-midptX)<10) {
+                    } else if(endptdiffX<10 && Math.abs(xpoints.get(midx)-midptX)<10 && flag==0) {
                         System.out.println("Vertical line");
+                        flag=1;
                         shapeList.add(Shapes.VERTICAL_LINE);
-                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)>10){
+                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)>10 && flag==0){
                         System.out.println("Bottom arrow");
+                        flag=1;
                         shapeList.add(Shapes.BOTTOM_ARROW);
-                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)<10){
+                    } else if(endptdiffY<10 && (ypoints.get(midy)-midptY)<10 && flag==0){
                         System.out.println("Top arrow");
+                        flag=1;
                         shapeList.add(Shapes.TOP_ARROW);
-                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)>10){
+                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)>10 && flag==0){
                         System.out.println("Right arrow");
+                        flag=1;
                         shapeList.add(Shapes.RIGHT_ARROW);
 
-                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)<10){
+                    } else if(endptdiffX<50 && (xpoints.get(midx)-midptX)<10 && flag==0){
                         System.out.println("Left arrow");
+                        flag=1;
                         shapeList.add(Shapes.LEFT_ARROW);
                     } else {
                         masterPointList.get(shapeCount).clear();
