@@ -1,8 +1,12 @@
 public enum Shapes {
-    RECTANGE,
+    RECTANGLE,
     DASH,
     CIRCLE,
-    ARROW,
+    BOTTOM_ARROW,
+    TOP_ARROW,
+    RIGHT_ARROW,
+    LEFT_ARROW,
     HORIZONTAL_LINE,
-    VERTICLE_LINE
+    VERTICAL_LINE;
+
 }
