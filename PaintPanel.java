@@ -20,7 +20,7 @@ import java.lang.Math;
 public class PaintPanel extends JPanel {
 
     private int pointCount = 0 ; // count number of points
-    List<List<Point>> masterPointList = new ArrayList<List<Point>>(4);
+    List<List<Point>> masterPointList = new ArrayList<List<Point>>(10);
 
     public int shapeCount = 0;
 

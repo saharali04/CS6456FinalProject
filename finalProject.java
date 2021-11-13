@@ -14,7 +14,11 @@ public class finalProject {
     List<Shapes> shapeList = new ArrayList<Shapes>();
     PaintPanel central_bar = new PaintPanel(); // create paint panel
     List<JSlider> sliderList = new ArrayList<JSlider>();
+    List<JRadioButton> radioButtonList = new ArrayList<JRadioButton>();
+    List<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
     int num_comp;
+    int radio_button_counter=0;
+    int check_box_counter=0;
 
     public finalProject() {
         // create a frame
@@ -113,20 +117,81 @@ public class finalProject {
                 num_comp=shapeList.toArray().length;
                 //System.out.println(num_comp);
 
+
                 //Radio Button
+
+
+                if(num_comp>=2 && num_comp%2==0)
+                {
+
+                    if(shapeList.get(num_comp - 1) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 2) == Shapes.CIRCLE){
+                        radio_button_counter+=1;
+                        ShapeInfo shapeInfo2=shapeInfoList.get(num_comp- 2);
+                        ShapeInfo shapeInfo1=shapeInfoList.get(num_comp- 1);
+                        System.out.println("Radio Button "+radio_button_counter);
+                        JRadioButton j1 = new JRadioButton("Radio Button "+radio_button_counter);
+                        radioButtonList.add(j1);
+                        j1.setBounds(shapeInfo2.getStartX(),shapeInfo2.getStartY(),shapeInfo1.getWidth(),shapeInfo2.getHeight());
+                        central_bar.add(j1);
+                        central_bar.repaint();
+
+                        //num_temp=num_temp-2;
+                        //num_comp=num_comp-2;
+                    }
+                }
+
+                if(num_comp>=2 && num_comp%2==0)
+                {
+
+                    if(shapeList.get(num_comp - 1) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 2) == Shapes.RECTANGLE){
+                        check_box_counter+=1;
+                        ShapeInfo shapeInfo2=shapeInfoList.get(num_comp- 2);
+                        ShapeInfo shapeInfo1=shapeInfoList.get(num_comp- 1);
+                        System.out.println("Check box "+check_box_counter);
+                        JCheckBox j1 = new JCheckBox("Check box "+check_box_counter);
+                        checkBoxList.add(j1);
+                        j1.setBounds(shapeInfo2.getStartX(),shapeInfo2.getStartY(),shapeInfo1.getWidth(),shapeInfo2.getHeight());
+                        central_bar.add(j1);
+                        central_bar.repaint();
+
+                        //num_temp=num_temp-2;
+                        //num_comp=num_comp-2;
+                    }
+                }
+/*
                 if(num_comp>=2 && num_comp%2==0){
                     int num_temp=num_comp;
-                    ShapeInfo shapeInfo1=shapeInfoList.get(num_temp - 1);
-                    ShapeInfo shapeInfo2=shapeInfoList.get(num_temp - 2);
+                    ShapeInfo shapeInfo1=shapeInfoList.get(num_temp);
+                    ShapeInfo shapeInfo2=shapeInfoList.get(num_temp - 1);
                     while(num_temp>=0){
-                        if(shapeList.get(num_temp - 1) == Shapes.HORIZONTAL_LINE && shapeList.get(num_temp - 2) == Shapes.CIRCLE){
+                        if(shapeList.get(num_temp) == Shapes.HORIZONTAL_LINE && shapeList.get(num_temp - 1) == Shapes.CIRCLE){
                             System.out.println("Radio Button");
                             num_temp=num_temp-2;
                             num_comp=num_comp-2;
                         }
+                        else break;
+
                     }
 
                 }
+                /*
+                if(num_comp>=2 && num_comp%2==0){
+                    int num_temp=num_comp;
+                    ShapeInfo shapeInfo1=shapeInfoList.get(num_temp);
+                    ShapeInfo shapeInfo2=shapeInfoList.get(num_temp - 1);
+                    while(num_temp>=0){
+                        if(shapeList.get(num_temp) == Shapes.HORIZONTAL_LINE && shapeList.get(num_temp - 1) == Shapes.CIRCLE){
+                            System.out.println("Radio Button");
+                            num_temp=num_temp-2;
+                            num_comp=num_comp-2;
+                        }
+                            else break;
+
+                    }
+
+                }
+                */
+
 
                 //Slider
                 if(num_comp>=3){
@@ -140,15 +205,15 @@ public class finalProject {
                         {
                             if (Math.abs(shapeInfo1.getStartX()-shapeInfo2.getStartX())<10 && Math.abs(shapeInfo3.getStartX()-shapeInfo2.getEndX())<10)
                                 System.out.println("Adding Slider");
-                                JSlider slider = new JSlider(0, shapeInfo2.getWidth(), 100);
+                                JSlider slider = new JSlider(0, (int)(shapeInfo2.getWidth()), 100);
                                 sliderList.add(slider);
-                                slider.setBounds(shapeInfo2.getStartX(), shapeInfo2.getStartY(), shapeInfo2.getWidth(), shapeInfo2.getHeight());
+                                slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)shapeInfo2.getWidth(), (int)shapeInfo2.getHeight());
                                 central_bar.add(slider);
                                 //central_bar.masterPointList.get(central_bar.shapeCount).clear();
-                                central_bar.masterPointList.clear();
+                                //central_bar.masterPointList.clear();
                                 //central_bar.masterPointList.get(central_bar.shapeCount-1).clear();
                                 //central_bar.masterPointList.get(central_bar.shapeCount-2).clear();
-                                central_bar.repaint();
+                                //central_bar.repaint();
                                 //central_bar.shapeCount-=3;
                             //JSlider slider = new JSlider(0, 50, 50);
                             //slider.setSize(50, 50);
@@ -163,9 +228,9 @@ public class finalProject {
                         {
                             if (Math.abs(shapeInfo3.getStartX()-shapeInfo2.getStartX())<10 && Math.abs(shapeInfo1.getStartX()-shapeInfo2.getEndX())<10)
                                 System.out.println("Adding Slider");
-                                JSlider slider = new JSlider(0, shapeInfo2.getWidth(), 100);
+                                JSlider slider = new JSlider(0, (int)(shapeInfo2.getWidth()), 100);
                                 sliderList.add(slider);
-                                slider.setBounds(shapeInfo2.getStartX(), shapeInfo2.getStartY(), shapeInfo2.getWidth(), shapeInfo2.getHeight()+10);
+                                slider.setBounds((int)shapeInfo2.getStartX(),(int) shapeInfo2.getStartY(),(int) shapeInfo2.getWidth(), (int)shapeInfo2.getHeight()+10);
                                 central_bar.add(slider);
                         }
 
