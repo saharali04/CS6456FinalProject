@@ -22,7 +22,7 @@ public class PaintPanel extends JPanel {
     private int pointCount = 0 ; // count number of points
     List<List<Point>> masterPointList = new ArrayList<List<Point>>(4);
 
-    private int shapeCount = 0;
+    public int shapeCount = 0;
 
     private List<Point> points = new ArrayList<Point>();
 
@@ -35,7 +35,15 @@ public class PaintPanel extends JPanel {
 
     private Shapes currentShape = null;
 
+    public List<ShapeInfo> returnShapeInfoList()
+    {
+        return this.shapeInfoList;
+    }
 
+    public List<Shapes> returnShapeList()
+    {
+        return this.shapeList;
+    }
 
     public PaintPanel() {
         addMouseMotionListener(new MouseMotionAdapter() {
@@ -116,7 +124,7 @@ public class PaintPanel extends JPanel {
                     currentShape = Shapes.CIRCLE;
 
                 } else {
-                    System.out.println("Not circle");
+                    //System.out.println("Not circle");
 
                     if (endptdiffX<10 && endptdiffY<10 && flag==0)
                     {
@@ -169,10 +177,10 @@ public class PaintPanel extends JPanel {
                 if (currentShape != null) {
                     ShapeInfo thisShapesInfo = new ShapeInfo(maxX - minX, maxY - minY, points.get(0).x, points.get(0).y, points.get(points.size() - 1).x, points.get(points.size() -1).y);
                     shapeInfoList.add(thisShapesInfo);
-                    System.out.println(thisShapesInfo);
+                    //System.out.println(thisShapesInfo);
 
                 }
-                System.out.println(currentShape);
+                //System.out.println(currentShape);
 
                 xpoints = new ArrayList<Integer>();
                 ypoints = new ArrayList<Integer>();
@@ -182,7 +190,7 @@ public class PaintPanel extends JPanel {
 
 
 
-                System.out.println(shapeList);
+                //System.out.println(shapeList);
             }
 
         });

@@ -1,4 +1,28 @@
 public class ShapeInfo {
+    public int getStartX() {
+        return startX;
+    }
+
+    public int getEndX() {
+        return endX;
+    }
+
+    public int getStartY() {
+        return startY;
+    }
+
+    public int getEndY() {
+        return endY;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     private int width;
     private int height;
     private int startX;
