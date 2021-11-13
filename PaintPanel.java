@@ -196,6 +196,19 @@ public class PaintPanel extends JPanel {
         });
     } // end PaintPanel constructor
 
+    public void clearComponents(){
+
+        masterPointList.clear();
+        xpoints.clear();
+        ypoints.clear();
+        points.clear();
+        pointCount=0;
+        shapeCount=0;
+        shapeList.clear();
+        shapeInfoList.clear();
+
+
+    }
     // draw oval in a 4-by-4 bounding box at specified location on window
     public void paintComponent( Graphics g ) {
         super.paintComponent( g ); // clears drawing area

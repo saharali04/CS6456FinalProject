@@ -133,7 +133,10 @@ public class finalProject {
                         radioButtonList.add(j1);
                         j1.setBounds(shapeInfo2.getStartX(),shapeInfo2.getStartY(),shapeInfo1.getWidth(),shapeInfo2.getHeight());
                         central_bar.add(j1);
+                        //central_bar.repaint();
+                        central_bar.clearComponents();
                         central_bar.repaint();
+                        System.out.println("Clearing Components");
 
                         //num_temp=num_temp-2;
                         //num_comp=num_comp-2;
@@ -152,7 +155,10 @@ public class finalProject {
                         checkBoxList.add(j1);
                         j1.setBounds(shapeInfo2.getStartX(),shapeInfo2.getStartY(),shapeInfo1.getWidth(),shapeInfo2.getHeight());
                         central_bar.add(j1);
+                        //central_bar.repaint();
+                        central_bar.clearComponents();
                         central_bar.repaint();
+                        System.out.println("Clearing Components");
 
                         //num_temp=num_temp-2;
                         //num_comp=num_comp-2;
@@ -209,6 +215,9 @@ public class finalProject {
                                 sliderList.add(slider);
                                 slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)shapeInfo2.getWidth(), (int)shapeInfo2.getHeight());
                                 central_bar.add(slider);
+                                central_bar.clearComponents();
+                                central_bar.repaint();
+                                System.out.println("Clearing Components");
                                 //central_bar.masterPointList.get(central_bar.shapeCount).clear();
                                 //central_bar.masterPointList.clear();
                                 //central_bar.masterPointList.get(central_bar.shapeCount-1).clear();
@@ -232,6 +241,9 @@ public class finalProject {
                                 sliderList.add(slider);
                                 slider.setBounds((int)shapeInfo2.getStartX(),(int) shapeInfo2.getStartY(),(int) shapeInfo2.getWidth(), (int)shapeInfo2.getHeight()+10);
                                 central_bar.add(slider);
+                                central_bar.clearComponents();
+                                central_bar.repaint();
+                                System.out.println("Clearing Components");
                         }
 
                     }
@@ -241,26 +253,58 @@ public class finalProject {
                         if(shapeInfo2.getStartX()<shapeInfo3.getStartX())
                         {
                             if (Math.abs(shapeInfo2.getStartX()-shapeInfo1.getStartX())<10 && Math.abs(shapeInfo3.getStartX()-shapeInfo1.getEndX())<10)
-                                System.out.println("Slider");
+                                //System.out.println("Slider");
+                            System.out.println("Adding Slider");
+                            JSlider slider = new JSlider(0, (int)(shapeInfo1.getWidth()), 100);
+                            sliderList.add(slider);
+                            slider.setBounds((int)shapeInfo1.getStartX(),(int) shapeInfo1.getStartY(),(int) shapeInfo1.getWidth(), (int)shapeInfo1.getHeight()+10);
+                            central_bar.add(slider);
+                            central_bar.clearComponents();
+                            central_bar.repaint();
+                            System.out.println("Clearing Components");
 
                         }
                         else if(shapeInfo2.getStartX()>shapeInfo3.getStartX())
                         {
                             if (Math.abs(shapeInfo3.getStartX()-shapeInfo1.getStartX())<10 && Math.abs(shapeInfo2.getStartX()-shapeInfo1.getEndX())<10)
-                                System.out.println("Slider");
+                                //System.out.println("Slider");
+                                System.out.println("Adding Slider");
+                            JSlider slider = new JSlider(0, (int)(shapeInfo1.getWidth()), 100);
+                            sliderList.add(slider);
+                            slider.setBounds((int)shapeInfo1.getStartX(),(int) shapeInfo1.getStartY(),(int) shapeInfo1.getWidth(), (int)shapeInfo1.getHeight()+10);
+                            central_bar.add(slider);
+                            central_bar.clearComponents();
+                            central_bar.repaint();
+                            System.out.println("Clearing Components");
                         }
                     }
                     else if(shapeList.get(num_comp - 3) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 2) == Shapes.VERTICAL_LINE && shapeList.get(num_comp - 1)== Shapes.VERTICAL_LINE) {
                         if(shapeInfo2.getStartX()<shapeInfo1.getStartX())
                         {
                             if (Math.abs(shapeInfo2.getStartX()-shapeInfo3.getStartX())<10 && Math.abs(shapeInfo1.getStartX()-shapeInfo1.getEndX())<10)
-                                System.out.println("Slider");
+                                //System.out.println("Slider");
+                            System.out.println("Adding Slider");
+                            JSlider slider = new JSlider(0, (int)(shapeInfo3.getWidth()), 100);
+                            sliderList.add(slider);
+                            slider.setBounds((int)shapeInfo3.getStartX(),(int) shapeInfo3.getStartY(),(int) shapeInfo3.getWidth(), (int)shapeInfo3.getHeight()+10);
+                            central_bar.add(slider);
+                            central_bar.clearComponents();
+                            central_bar.repaint();
+                            System.out.println("Clearing Components");
 
                         }
                         else if(shapeInfo2.getStartX()>shapeInfo1.getStartX())
                         {
                             if (Math.abs(shapeInfo1.getStartX()-shapeInfo3.getStartX())<10 && Math.abs(shapeInfo2.getStartX()-shapeInfo3.getEndX())<10)
-                                System.out.println("Slider");
+                                //System.out.println("Slider");
+                            System.out.println("Adding Slider");
+                            JSlider slider = new JSlider(0, (int)(shapeInfo3.getWidth()), 100);
+                            sliderList.add(slider);
+                            slider.setBounds((int)shapeInfo3.getStartX(),(int) shapeInfo3.getStartY(),(int) shapeInfo3.getWidth(), (int)shapeInfo3.getHeight()+10);
+                            central_bar.add(slider);
+                            central_bar.clearComponents();
+                            central_bar.repaint();
+                            System.out.println("Clearing Components");
                         }
                     }
 
