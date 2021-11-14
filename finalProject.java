@@ -110,6 +110,85 @@ public class finalProject {
         List<Shapes> finalShapeList = shapeList;
         central_bar.addMouseListener(new MouseAdapter() {
             @Override public void mouseReleased(MouseEvent e) {
+                List<Shapes> currentShapeList = central_bar.getShapeList();
+                List<ShapeInfo> currentShapeInfoList = central_bar.getShapeInfoList();
+                boolean isPointInsideRect = true;
+                List<List<Point>> master = central_bar.getMasterPointList();
+                int index = 0;
+                Rectangle rect;
+
+                if (currentShapeList.size() >=2) {
+                    if ((currentShapeList.get(0) == Shapes.RECTANGLE && currentShapeList.get(1) == Shapes.HORIZONTAL_LINE)
+                        || (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.get(1) == Shapes.RECTANGLE) && currentShapeList.size() == 2) {
+
+
+
+
+                        if (currentShapeList.get(0) == Shapes.RECTANGLE) {
+                            index = 1;
+                            rect = new Rectangle(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), currentShapeInfoList.get(0).getHeight());
+                        } else {
+                            rect = new Rectangle(currentShapeInfoList.get(1).getStartX(), currentShapeInfoList.get(1).getStartY(), currentShapeInfoList.get(1).getWidth(), currentShapeInfoList.get(1).getHeight());
+                        }
+
+                        for (int i = 0; i < master.get(index).size(); i++) {
+                            if (! rect.contains(master.get(index).get(i))) {
+                                isPointInsideRect = false;
+                            }
+                        }
+
+                        if (isPointInsideRect) {
+                            JButton new_button = new JButton("Untitled");
+                            if (currentShapeList.get(0) == Shapes.RECTANGLE) {
+                                new_button.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), currentShapeInfoList.get(0).getHeight());
+                            } else {
+                                new_button.setBounds(currentShapeInfoList.get(1).getStartX(), currentShapeInfoList.get(1).getStartY(), currentShapeInfoList.get(1).getWidth(), currentShapeInfoList.get(1).getHeight());
+                            }
+                            central_bar.add(new_button);
+                            central_bar.clearComponents();
+                        } else {
+                            System.out.println("Nothing detected");
+                        }
+                    } else if ((currentShapeList.get(0) == Shapes.RECTANGLE && currentShapeList.get(1) == Shapes.BOTTOM_ARROW) || (currentShapeList.get(0) == Shapes.BOTTOM_ARROW && currentShapeList.get(1) == Shapes.RECTANGLE)
+                        && currentShapeList.size() == 2) {
+
+                        if (currentShapeList.get(0) == Shapes.RECTANGLE) {
+                            index = 1;
+                            rect = new Rectangle(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), currentShapeInfoList.get(0).getHeight());
+                        } else {
+                            rect = new Rectangle(currentShapeInfoList.get(1).getStartX(), currentShapeInfoList.get(1).getStartY(), currentShapeInfoList.get(1).getWidth(), currentShapeInfoList.get(1).getHeight());
+                        }
+
+                        for (int i = 0; i < master.get(index).size(); i++) {
+                            if (! rect.contains(master.get(index).get(i))) {
+                                isPointInsideRect = false;
+                            }
+                        }
+
+                        if (isPointInsideRect) {
+                            JComboBox<String> comboBox = new JComboBox<>(new String[]{"One", "Two", "Three", "Four"});
+                            comboBox.setSelectedItem("One");
+                            if (currentShapeList.get(0) == Shapes.RECTANGLE) {
+                                comboBox.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), currentShapeInfoList.get(0).getHeight());
+                            } else {
+                                comboBox.setBounds(currentShapeInfoList.get(1).getStartX(), currentShapeInfoList.get(1).getStartY(), currentShapeInfoList.get(1).getWidth(), currentShapeInfoList.get(1).getHeight());
+                            }
+                            central_bar.add(comboBox);
+                            central_bar.clearComponents();
+                        } else {
+                            System.out.println("Nothing detected");
+                        }
+
+                    } else if (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.size() == 1) {
+                        JTextField text_box = new JTextField("New event", 20);
+                        text_box.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), 15);
+                        central_bar.add(text_box);
+                        central_bar.clearComponents();
+                    }
+                }
+
+
+
 
                 System.out.println(shapeList);
                 //System.out.println(shapeInfoList);
@@ -176,9 +255,7 @@ public class finalProject {
                             num_comp=num_comp-2;
                         }
                         else break;
-
                     }
-
                 }
                 /*
                 if(num_comp>=2 && num_comp%2==0){
@@ -192,9 +269,7 @@ public class finalProject {
                             num_comp=num_comp-2;
                         }
                             else break;
-
                     }
-
                 }
                 */
 
@@ -343,8 +418,8 @@ public class finalProject {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 finalProject app = new finalProject();
-                app.shapeList=app.central_bar.returnShapeList();
-                app.shapeInfoList=app.central_bar.returnShapeInfoList();
+                app.shapeList=app.central_bar.getShapeList();
+                app.shapeInfoList=app.central_bar.getShapeInfoList();
                 //app.central_bar.masterPointList.clear();
                 //app.central_bar.repaint();
 
@@ -354,6 +429,3 @@ public class finalProject {
         });
 
     }}
-
-
-

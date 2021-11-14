@@ -20,9 +20,9 @@ import java.lang.Math;
 public class PaintPanel extends JPanel {
 
     private int pointCount = 0 ; // count number of points
-    List<List<Point>> masterPointList = new ArrayList<List<Point>>(10);
+    List<List<Point>> masterPointList = new ArrayList<List<Point>>();
 
-    public int shapeCount = 0;
+    private int shapeCount = 0;
 
     private List<Point> points = new ArrayList<Point>();
 
@@ -35,15 +35,7 @@ public class PaintPanel extends JPanel {
 
     private Shapes currentShape = null;
 
-    public List<ShapeInfo> returnShapeInfoList()
-    {
-        return this.shapeInfoList;
-    }
 
-    public List<Shapes> returnShapeList()
-    {
-        return this.shapeList;
-    }
 
     public PaintPanel() {
         addMouseMotionListener(new MouseMotionAdapter() {
@@ -124,7 +116,7 @@ public class PaintPanel extends JPanel {
                     currentShape = Shapes.CIRCLE;
 
                 } else {
-                    //System.out.println("Not circle");
+                    System.out.println("Not circle");
 
                     if (endptdiffX<10 && endptdiffY<10 && flag==0)
                     {
@@ -177,10 +169,10 @@ public class PaintPanel extends JPanel {
                 if (currentShape != null) {
                     ShapeInfo thisShapesInfo = new ShapeInfo(maxX - minX, maxY - minY, points.get(0).x, points.get(0).y, points.get(points.size() - 1).x, points.get(points.size() -1).y);
                     shapeInfoList.add(thisShapesInfo);
-                    //System.out.println(thisShapesInfo);
+                    System.out.println(thisShapesInfo);
 
                 }
-                //System.out.println(currentShape);
+                System.out.println(currentShape);
 
                 xpoints = new ArrayList<Integer>();
                 ypoints = new ArrayList<Integer>();
@@ -190,14 +182,37 @@ public class PaintPanel extends JPanel {
 
 
 
-                //System.out.println(shapeList);
+                System.out.println(shapeList);
             }
 
         });
     } // end PaintPanel constructor
 
-    public void clearComponents(){
+    // draw oval in a 4-by-4 bounding box at specified location on window
+    public void paintComponent( Graphics g ) {
+        super.paintComponent( g ); // clears drawing area
+        // draw all points in array
+        System.out.println(masterPointList.size());
+        for (int j = 0; j < masterPointList.size(); j++) {
+            for (int i = 0 ; i < masterPointList.get(j).size(); i++) {
+                g.fillOval( masterPointList.get(j).get(i).x, masterPointList.get(j).get(i).y, 8, 8 );
+            }
+        }
+    } // end method paintComponent
 
+    public List<Shapes> getShapeList() {
+        return shapeList;
+    }
+
+    public List<ShapeInfo> getShapeInfoList() {
+        return shapeInfoList;
+    }
+
+    public List<List<Point>> getMasterPointList() {
+        return masterPointList;
+    }
+
+    public void clearComponents(){
         masterPointList.clear();
         xpoints.clear();
         ypoints.clear();
@@ -206,17 +221,8 @@ public class PaintPanel extends JPanel {
         shapeCount=0;
         shapeList.clear();
         shapeInfoList.clear();
+        repaint();
 
 
     }
-    // draw oval in a 4-by-4 bounding box at specified location on window
-    public void paintComponent( Graphics g ) {
-        super.paintComponent( g ); // clears drawing area
-        // draw all points in array
-        for (int j = 0; j < masterPointList.size(); j++) {
-            for (int i = 0 ; i < masterPointList.get(j).size(); i++) {
-                g.fillOval( masterPointList.get(j).get(i).x, masterPointList.get(j).get(i).y, 8, 8 );
-            }
-        }
-    } // end method paintComponent
 } // end class PaintPanel
