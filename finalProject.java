@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 
 
-public class finalProject {
+public class FinalProject {
     // unlike the past example, we’ll put the initial code in the constructor and then
     // create an instance of SimpleApp in the main function.
     List<ShapeInfo> shapeInfoList = new ArrayList<ShapeInfo>();
@@ -33,8 +33,10 @@ public class finalProject {
     int radio_button_counter=0;
     int check_box_counter=0;
     JComponent j=null;
+    JButton currComp = null;
+    HSLColor currentHSL = new HSLColor(300,50,50);
 
-    public finalProject() {
+    public FinalProject() {
         // create a frame
         JFrame f = new JFrame("Menu demo");
 
@@ -186,19 +188,14 @@ public class finalProject {
         });
 
 /*
-
         central_bar.addContainerListener(new ContainerListener() {
-
             public void componentAdded(ContainerEvent e) {
                 System.out.println(" added to "+ e);
                 j=central_bar.
             }
-
             public void componentRemoved(ContainerEvent e) {
                 System.out.println(" removed from "+ e);
             }
-
-
 /*
             void displayMessage(String action, ContainerEvent e) {
                 System.out.println(((JButton) e.getChild()).getText() + " was" + action
@@ -206,7 +203,6 @@ public class finalProject {
             }*/
 /*
         });
-
 */
         JButton reset_button = new JButton("Reset");
         reset_button.setBounds(330, 515, 75, 20);
@@ -272,9 +268,74 @@ public class finalProject {
 
 
 
+        ColorPicker cp = new ColorPicker();
+        cp.setLayout(new BorderLayout());
+        Color col = currentHSL.getRGB();
+        JLabel titleLabel = new JLabel(currentHSL.rgbToString(col), SwingConstants.CENTER);
+        //JButton ok = new JButton("Ok");
+        //cp.add(ok, BorderLayout.SOUTH);
+        cp.add(titleLabel, BorderLayout.CENTER);
+        currentHSL = new HSLColor(300,50,50);
+        cp.getContentPane().setBackground(currentHSL.getRGB());
 
+        cp.addKeyListener(new KeyListener() {
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    currComp.setOpaque(true);
+                    currComp.setBorderPainted(false);
+                    currComp.setBackground(currentHSL.getRGB());
+                    cp.setVisible(false);
+                    currComp = null;
+                }
+            }
 
+            public void keyPressed(KeyEvent e) {
+            }
 
+            public void keyTyped(KeyEvent e) {
+            }
+
+        });
+
+        cp.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent event) {
+                int hue = event.getX();
+                int lum = event.getY();
+                try {
+                    HSLColor hsl = new HSLColor(hue,currentHSL.getSaturation(),lum);
+                    currentHSL = hsl;
+                    cp.getContentPane().setBackground(hsl.getRGB());
+                    Color col = currentHSL.getRGB();
+                    titleLabel.setText(currentHSL.rgbToString(col));
+
+                } catch (Exception e) {
+                    System.out.println("out of bounds");
+                }
+            }
+        });
+
+        cp.addMouseWheelListener(new MouseWheelListener() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent event) {
+                if (!event.isShiftDown()) {
+                    if (currentHSL.getSaturation() + event.getWheelRotation() >= 0 && currentHSL.getSaturation() + event.getWheelRotation() <= 100) {
+                        try {
+                            System.out.println(currentHSL.getSaturation() + event.getWheelRotation());
+                            Color newColor = currentHSL.adjustSaturation(currentHSL.getSaturation() + event.getWheelRotation());
+                            cp.getContentPane().setBackground(newColor);
+                            currentHSL = new HSLColor(newColor);
+                            Color col = currentHSL.getRGB();
+                            titleLabel.setText(currentHSL.rgbToString(col));
+                        } catch (Exception e) {
+                            System.out.println("out of bounds");
+                        }
+                    }
+                }
+            }
+        });
+
+        cp.setVisible(false);
 
 
         central_bar.addMouseListener(new MouseAdapter() {
@@ -288,7 +349,7 @@ public class finalProject {
 
                 if (currentShapeList.size() >=2) {
                     if ((currentShapeList.get(0) == Shapes.RECTANGLE && currentShapeList.get(1) == Shapes.HORIZONTAL_LINE)
-                        || (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.get(1) == Shapes.RECTANGLE) && currentShapeList.size() == 2) {
+                            || (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.get(1) == Shapes.RECTANGLE) && currentShapeList.size() == 2) {
 
 
 
@@ -308,6 +369,10 @@ public class finalProject {
 
                         if (isPointInsideRect) {
                             JButton new_button = new JButton("Untitled");
+                            currComp = new_button;
+                            cp.setVisible(true);
+                            cp.setFocusable(true);
+                            new_button.setBackground(currentHSL.getRGB());
                             if (currentShapeList.get(0) == Shapes.RECTANGLE) {
                                 new_button.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), currentShapeInfoList.get(0).getHeight());
                             } else {
@@ -320,7 +385,7 @@ public class finalProject {
                             System.out.println("Nothing detected");
                         }
                     } else if ((currentShapeList.get(0) == Shapes.RECTANGLE && currentShapeList.get(1) == Shapes.BOTTOM_ARROW) || (currentShapeList.get(0) == Shapes.BOTTOM_ARROW && currentShapeList.get(1) == Shapes.RECTANGLE)
-                        && currentShapeList.size() == 2) {
+                            && currentShapeList.size() == 2) {
 
                         if (currentShapeList.get(0) == Shapes.RECTANGLE) {
                             index = 1;
@@ -349,12 +414,16 @@ public class finalProject {
                         } else {
                             System.out.println("Nothing detected");
                         }
+                    }
 
-                    } else if (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.size() == 1) {
-                        JTextField text_box = new JTextField("New event", 20);
-                        text_box.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), 15);
-                        central_bar.add(text_box);
+                } else if (currentShapeList.size() == 1) {
+                    if (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE) {
+                        JTextField text_box = new JTextField("Enter your text here", 20);
                         jList.add(text_box);
+                        text_box.setDragEnabled(true);
+                        text_box.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), 20);
+                        central_bar.add(text_box);
+                        central_bar.addToListOfComp(text_box);
                         central_bar.clearComponents();
                     }
                 }
@@ -456,7 +525,7 @@ public class finalProject {
                         System.out.println("Adding Slider");
                         JSlider slider = new JSlider(JSlider.VERTICAL,0, (int)(shapeInfo2.getHeight()), 100);
                         sliderList.add(slider);
-                        slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)(shapeInfo2.getWidth()+10), (int)shapeInfo2.getHeight());
+                        slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)(shapeInfo2.getWidth()+18), (int)shapeInfo2.getHeight());
                         //slider.s
                         central_bar.add(slider);
                         jList.add(slider);
@@ -464,11 +533,35 @@ public class finalProject {
                         central_bar.repaint();
                         System.out.println("Clearing Components");
                     }
-                    else if(shapeList.get(num_comp - 2) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 1) == Shapes.VERTICAL_LINE && shapeList.get(num_comp - 3)== Shapes.VERTICAL_LINE) {
+                   else if(shapeList.get(num_comp - 2) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 1) == Shapes.VERTICAL_LINE && shapeList.get(num_comp - 3)== Shapes.HORIZONTAL_LINE) {
                        System.out.println("Adding Slider");
-                       JSlider slider = new JSlider(0, (int)(shapeInfo2.getHeight()), 100);
+                       JSlider slider = new JSlider(JSlider.VERTICAL,0, (int)(shapeInfo1.getHeight()), 100);
                        sliderList.add(slider);
-                       slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)(shapeInfo2.getWidth()+10), (int)shapeInfo2.getHeight());
+                       slider.setBounds((int)shapeInfo1.getStartX(), (int)shapeInfo1.getStartY(), (int)(shapeInfo1.getWidth()+18), (int)shapeInfo1.getHeight());
+                       //slider.s
+                       central_bar.add(slider);
+                       jList.add(slider);
+                       central_bar.clearComponents();
+                       central_bar.repaint();
+                       System.out.println("Clearing Components");
+                   }
+                   else if(shapeList.get(num_comp - 2) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 1) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 3)== Shapes.VERTICAL_LINE) {
+                       System.out.println("Adding Slider");
+                       JSlider slider = new JSlider(JSlider.VERTICAL,0, (int)(shapeInfo3.getHeight()), 100);
+                       sliderList.add(slider);
+                       slider.setBounds((int)shapeInfo3.getStartX(), (int)shapeInfo3.getStartY(), (int)(shapeInfo3.getWidth()+18), (int)shapeInfo3.getHeight());
+                       //slider.s
+                       central_bar.add(slider);
+                       jList.add(slider);
+                       central_bar.clearComponents();
+                       central_bar.repaint();
+                       System.out.println("Clearing Components");
+                   }
+                    else if(shapeList.get(num_comp - 2) == Shapes.HORIZONTAL_LINE && shapeList.get(num_comp - 1) == Shapes.VERTICAL_LINE && shapeList.get(num_comp - 3)== Shapes.VERTICAL_LINE) {
+                       System.out.println("Adding Horizontal Slider");
+                       JSlider slider = new JSlider(JSlider.HORIZONTAL,0, (int)(shapeInfo2.getHeight()), (int)(shapeInfo2.getHeight()));
+                       sliderList.add(slider);
+                       slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)(shapeInfo2.getWidth()), (int)(shapeInfo2.getHeight()+18));
                        //slider.s
                        central_bar.add(slider);
                        jList.add(slider);
@@ -484,7 +577,7 @@ public class finalProject {
                         {
                             if (Math.abs(shapeInfo1.getStartX()-shapeInfo2.getStartX())<10 && Math.abs(shapeInfo3.getStartX()-shapeInfo2.getEndX())<10)
                                 System.out.println("Adding Slider");
-                                JSlider slider = new JSlider(0, (int)(shapeInfo2.getWidth()), 100);
+                                JSlider slider = new JSlider(JSlider.HORIZONTAL,0, (int)(shapeInfo2.getWidth()), 100);
                                 sliderList.add(slider);
                                 slider.setBounds((int)shapeInfo2.getStartX(), (int)shapeInfo2.getStartY(), (int)shapeInfo2.getWidth(), (int)shapeInfo2.getHeight());
                                 central_bar.add(slider);
@@ -696,7 +789,7 @@ public class finalProject {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                finalProject app = new finalProject();
+                FinalProject app = new FinalProject();
                 app.shapeList=app.central_bar.getShapeList();
                 app.shapeInfoList=app.central_bar.getShapeInfoList();
                 //app.central_bar.masterPointList.clear();
