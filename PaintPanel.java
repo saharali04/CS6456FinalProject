@@ -194,6 +194,8 @@ public class PaintPanel extends JPanel {
 
     } // end PaintPanel constructor
 
+    boolean grid_yes=true;
+    int step=20;
     // draw oval in a 4-by-4 bounding box at specified location on window
     public void paintComponent( Graphics g ) {
         super.paintComponent( g ); // clears drawing area
@@ -203,6 +205,15 @@ public class PaintPanel extends JPanel {
                 g.fillOval( masterPointList.get(j).get(i).x, masterPointList.get(j).get(i).y, 8, 8 );
             }
         }
+
+       if(grid_yes==true){
+       //     int this.size
+           for(int j = 0; j < 10000; j=j+step){
+           g.drawLine(0, j, 10000, j);
+           g.drawLine(j, 0, j, 10000);
+       }
+
+       }
     } // end method paintComponent
 
     public List<Shapes> getShapeList() {
