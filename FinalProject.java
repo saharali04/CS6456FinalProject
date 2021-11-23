@@ -414,12 +414,15 @@ public class FinalProject {
                         } else {
                             System.out.println("Nothing detected");
                         }
+                    }
 
-                    } else if (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE && currentShapeList.size() == 1) {
+                } else if (currentShapeList.size() == 1) {
+                    if (currentShapeList.get(0) == Shapes.HORIZONTAL_LINE) {
                         JTextField text_box = new JTextField("New event", 20);
+                        text_box.setDragEnabled(true);
                         text_box.setBounds(currentShapeInfoList.get(0).getStartX(), currentShapeInfoList.get(0).getStartY(), currentShapeInfoList.get(0).getWidth(), 15);
                         central_bar.add(text_box);
-                        jList.add(text_box);
+                        central_bar.addToListOfComp(text_box);
                         central_bar.clearComponents();
                     }
                 }
